@@ -10,8 +10,10 @@ import java.sql.Statement;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,16 +25,21 @@ import javafx.stage.Stage;
 public class App extends Application {
 	  @Override
 	    public void start(Stage stage) {
+		  	//Setup
+		  	Button eingaben = new Button("Eintrag erstellen");
 		  	// Umlaute werden sonst nicht richtig dargestellt
 		  	stage.setTitle("F\u00dcFA");
-	        String javaVersion = System.getProperty("java.version");
-	        String javafxVersion = System.getProperty("javafx.version");
 	        Text text = new Text("F\u00dcFA - Finanz \u00dcbersicht f\u00fcr Anf\u00e4nger");
 	        BorderPane border = new BorderPane();
 	        text.setFill(Color.BLACK);
 	        text.setFont(Font.font("Comic Sans MS", FontPosture.ITALIC, 20));
 	        border.setTop(new StackPane(text));
-	     //   Label label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
+	        border.setBottom(new StackPane(eingaben));
+	        
+	        //Eingaben von Ein-und Ausgaben realisieren
+	        
+	        eingaben.setOnAction(e -> Eingaben.display());
+	        
 	        Scene scene = new Scene(border, 640, 480);
 	        stage.setScene(scene);
 	        stage.show();
@@ -40,6 +47,6 @@ public class App extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch();
-		System.out.println(new Datenbankmodifications().getGreeting());
+		//System.out.println(new Datenbankmodifications().getGreeting());
 	}
 }

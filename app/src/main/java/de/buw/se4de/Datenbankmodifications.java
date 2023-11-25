@@ -21,7 +21,7 @@ public class Datenbankmodifications {
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, IST_AUSGABE BOOLEAN, WERT FLOAT, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
 		stmt.executeUpdate(createQ);
 
-		stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Hello World!')");
+		//stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Hello World!')");
 		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Hello again!')");
 		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Bye!')");
 
