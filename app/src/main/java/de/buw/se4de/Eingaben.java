@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,14 +30,17 @@ public class Eingaben {
 		eingabe.setTitle("Neuer Eintrag");
 		//Fenster kann dann nicht ohne weiteres verlassen werden. Muss erst geschlossen werden
 		eingabe.initModality(Modality.APPLICATION_MODAL);
-		abschicken.setOnAction(e-> eingabe.close());
+		//only 1 radiobutton can be selectet
+		ToggleGroup toggleGroup = new ToggleGroup();
 		RadioButton art = new RadioButton("Eingabe");
 		RadioButton art2 = new RadioButton("Ausgabe");
+		art.setToggleGroup(toggleGroup);
+		art2.setToggleGroup(toggleGroup);
 		HBox radiobuttons = new HBox(5);
 		radiobuttons.getChildren().add(art);
 		radiobuttons.getChildren().add(art2);
 		
-		
+		//TODO Kategorien müssen automatisch ausgewählt werden.
 		ListView<String> listView = new ListView<>();
         ObservableList<String> items = FXCollections.observableArrayList(
                 "Option 1",
@@ -50,7 +54,7 @@ public class Eingaben {
         // Create a TextField for user input
         TextField userInputField = new TextField();
 
-        // Event handler for when an item in the list is selected
+        // Überprüft eine Änderung, was ausgewählt wurde.
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             // Display the selected option in the TextField
             userInputField.setText(newValue);
@@ -70,6 +74,32 @@ public class Eingaben {
 		layout.getChildren().add(vbox);  
 		layout.getChildren().add(abschicken); 
 		Scene scene = new Scene (layout, 300, 300);
+		
+		abschicken.setOnAction(e-> {
+			String order = "";
+			String note = notiz.getText();
+			String category = userInputField.getText();
+			Double money = 0.0;
+			try {
+			money = Double.parseDouble(betrag.getText());
+			}catch(Exception n){
+				
+			}
+			/* toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+		            if (newValue != null) {
+		                // A radio button was selected
+		                String order = (((RadioButton) newValue).getText());
+		            } 
+		        });
+		        */
+			if (order.equals("Eingabe"))
+			System.out.println(note);
+			try {
+				new Datenbankmodifications().addGreeting(true, 50, "hla", "hihiih");
+			} catch (Exception e1) {
+			}
+		eingabe.close();});
+		
 		eingabe.setScene(scene);
 		eingabe.showAndWait();
 	}

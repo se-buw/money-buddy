@@ -8,6 +8,7 @@ import java.sql.Statement;
 public class Datenbankmodifications {
 	
 	public String getGreeting() throws Exception {
+		
 		String result = "";
 
 		Class.forName("org.h2.Driver");
@@ -20,8 +21,8 @@ public class Datenbankmodifications {
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, IST_AUSGABE BOOLEAN, WERT FLOAT, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
 		stmt.executeUpdate(createQ);
-
-		//stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Hello World!')");
+		
+		stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Halo')");
 		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Hello again!')");
 		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Bye!')");
 
@@ -33,6 +34,7 @@ public class Datenbankmodifications {
 */
 		//Ausgabe
 		while (selectRS.next()) {
+			System.out.print(100021394);
 		    int columns = selectRS.getMetaData().getColumnCount();
 		    for (int i = 1; i <= columns; i++) {
 		        System.out.printf("%s ", selectRS.getString(i));
@@ -40,6 +42,23 @@ public class Datenbankmodifications {
 		    System.out.println();  // Move to the next line for the next row
 		}
 		return result;
+	}
+	public static void addGreeting(boolean order, double wert, String notiz, String kategorie) throws Exception {
+		String result = "";
+
+		Class.forName("org.h2.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
+
+		Statement stmt = conn.createStatement();
+
+		//Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie und eine Notiz
+		//ToDo Datum:
+		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
+				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, IST_AUSGABE BOOLEAN, WERT FLOAT, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
+		stmt.executeUpdate(createQ);
+		
+		stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(order,wert,'kategorie','haushalt')");
+		
 	}
 
 }
