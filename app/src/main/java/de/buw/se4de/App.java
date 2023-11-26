@@ -8,10 +8,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -33,7 +36,7 @@ public class App extends Application {
 			} catch (Exception e) {
 			}
 		  	String diff = difference[0] + "";
-		  	Button eingaben = new Button("Eintrag erstellen");
+		  	Button eingaben = new Button("Transaktion hinzuf\u00fcgen");
 		  	Button aktualisieren = new Button("Aktualisieren");
 		  	// Umlaute werden sonst nicht richtig dargestellt
 		  	stage.setTitle("F\u00dcFA");
@@ -43,15 +46,28 @@ public class App extends Application {
 	        BorderPane border = new BorderPane();
 	        VBox leftborder = new VBox(10);
 	        HBox bottomborder = new HBox(20);
+	        String[] dates = {" "};
+	        try {
+				 dates = new Datenbankmodifications().datesWithDetails();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        ListView<String> listView = new ListView<>();
+	        ObservableList<String> items = FXCollections.observableArrayList(
+                   dates[0], dates[1],dates[2], dates[3],dates[4], dates[5],
+                   dates[6], dates[7],dates[8], dates[9]
+            );
+	        listView.setItems(items);
 	        bottomborder.getChildren().addAll(eingaben);
-	        bottomborder.getChildren().addAll(aktualisieren);
+	        border.setRight(aktualisieren);
 	        leftborder.getChildren().addAll( differenz, space );
 	        text.setFill(Color.BLACK);
 	        text.setFont(Font.font("Comic Sans MS", FontPosture.ITALIC, 20));
 	        border.setTop(new StackPane(text));
 	        border.setBottom(bottomborder);
 	        border.setLeft(leftborder);
-	       
+	        border.setCenter(listView);
 	        
 	        //Eingaben von Ein-und Ausgaben realisieren
 	        
