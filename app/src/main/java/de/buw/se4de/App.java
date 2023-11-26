@@ -47,7 +47,6 @@ public class App extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch();
-		//new Datenbankmodifications().addGreeting(true, 50, "hla", "hihiih");
-		System.out.println(new Datenbankmodifications().getGreeting());
+		new Datenbankmodifications().getGreeting();
 	}
 }

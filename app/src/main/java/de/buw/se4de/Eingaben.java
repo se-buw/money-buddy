@@ -40,16 +40,27 @@ public class Eingaben {
 		radiobuttons.getChildren().add(art);
 		radiobuttons.getChildren().add(art2);
 		
-		//TODO Kategorien müssen automatisch ausgewählt werden.
+		//TODO Kategorien müssen anpassbar sein.
+		String[] order = {""};
 		ListView<String> listView = new ListView<>();
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Option 1",
-                "Option 2",
-                "Option 3","Option 1",
-                "Option 2",
-                "Option 3"
-        );
-        listView.setItems(items);
+		 toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+	            if (newValue.equals(art)) {
+	            	 ObservableList<String> items = FXCollections.observableArrayList(
+	                         "Gehalt",
+	                         "Geschenke"
+	                 );
+	            	 listView.setItems(items);
+	            	 order[0] = "Eingabe";
+	            }else {
+	            	ObservableList<String> items = FXCollections.observableArrayList(
+	                         "Miete",
+	                         "Lebensmittel",
+	                         "Freizeit"
+	                 );
+	            	 listView.setItems(items);
+	            	 order[0] = "Ausgabe";
+	            }
+	       });
 
         // Create a TextField for user input
         TextField userInputField = new TextField();
@@ -78,8 +89,8 @@ public class Eingaben {
 		abschicken.setOnAction(e-> {
 			//ein Array weil sonst kommt die Fehlermeldung:
 			//Local variable order defined in an enclosing scope must be final or effectively final
-			String[] order = { " " };
-			Boolean eintragArt;
+			
+			//Boolean eintragArt;
 			String note = notiz.getText();
 			String category = userInputField.getText();
 			float money = (float) 0.0;
@@ -88,24 +99,14 @@ public class Eingaben {
 			}catch(Exception n){
 				
 			}
-			 toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-		            if (newValue != null) {
-		                // A radio button was selected
-		            	order[0] = ((RadioButton) newValue).getText();
-		            } 
-		       });
-			if (order[0].equals("Eingabe")) {
-				eintragArt = true;
-			}else {
-				eintragArt = false;
-			}
-			System.out.println(note);
+			System.out.print(order+ " HAllo");
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
-				new Datenbankmodifications().addGreeting(eintragArt,money, note, category);
+				new Datenbankmodifications().addGreeting(order[0],money, note, category);
 			} catch (Exception e1) {
 			}
-		eingabe.close();});
+		eingabe.close();
+		});
 		
 		eingabe.setScene(scene);
 		eingabe.showAndWait();
