@@ -93,9 +93,9 @@ public class Eingaben {
 			//Boolean eintragArt;
 			String note = notiz.getText();
 			String category = userInputField.getText();
-			float money = (float) 0.0;
+			double money =  0.0;
 			try {
-			money = (float)Double.parseDouble(betrag.getText());
+			money = Double.parseDouble(betrag.getText());
 			}catch(Exception n){
 				
 			}

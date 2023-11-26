@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -26,20 +27,44 @@ public class App extends Application {
 	  @Override
 	    public void start(Stage stage) {
 		  	//Setup
+		  double[] difference = {0} ;
+		  	try {
+				difference[0] = new Datenbankmodifications().sum();
+			} catch (Exception e) {
+			}
+		  	String diff = difference[0] + "";
 		  	Button eingaben = new Button("Eintrag erstellen");
+		  	Button aktualisieren = new Button("Aktualisieren");
 		  	// Umlaute werden sonst nicht richtig dargestellt
 		  	stage.setTitle("F\u00dcFA");
 	        Text text = new Text("F\u00dcFA - Finanz \u00dcbersicht f\u00fcr Anf\u00e4nger");
+	        Label differenz = new Label("Aktuelle Differenz:");
+	        Label space = new Label(diff);
 	        BorderPane border = new BorderPane();
+	        VBox leftborder = new VBox(10);
+	        HBox bottomborder = new HBox(20);
+	        bottomborder.getChildren().addAll(eingaben);
+	        bottomborder.getChildren().addAll(aktualisieren);
+	        leftborder.getChildren().addAll( differenz, space );
 	        text.setFill(Color.BLACK);
 	        text.setFont(Font.font("Comic Sans MS", FontPosture.ITALIC, 20));
 	        border.setTop(new StackPane(text));
-	        border.setBottom(new StackPane(eingaben));
+	        border.setBottom(bottomborder);
+	        border.setLeft(leftborder);
+	       
 	        
 	        //Eingaben von Ein-und Ausgaben realisieren
 	        
 	        eingaben.setOnAction(e -> Eingaben.display());
-	        
+	        aktualisieren.setOnAction(e->{ 
+	        	try {
+	        		String neu = "";
+					difference[0] = new Datenbankmodifications().sum();
+					neu = difference[0] + "";
+					space.setText(neu);
+				} catch (Exception e1) {
+				}
+	        });
 	        Scene scene = new Scene(border, 640, 480);
 	        stage.setScene(scene);
 	        stage.show();
