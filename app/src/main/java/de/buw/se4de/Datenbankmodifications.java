@@ -108,11 +108,11 @@ public class Datenbankmodifications {
 	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM ASC LIMIT 10";
 	        try (PreparedStatement dateStatement = conn.prepareStatement(dateQuery);
 	             ResultSet dateResultSet = dateStatement.executeQuery()) {
-	            int i = 0;
-	            while (dateResultSet.next() && i < 10) {
+	            int i = 9;
+	            while (dateResultSet.next() && i > -1) {
 	                String date = dateResultSet.getString("DATUM");
 	                dates[i] = date;
-	                i++;
+	                i--;
 	            }
 	        }
 

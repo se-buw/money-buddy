@@ -82,7 +82,7 @@ public class App extends Application {
 	        		String neu = "";
 					difference[0] = new Datenbankmodifications().sum();
 					neu = difference[0] + "";
-					space.setText(neu);
+					space.setText("   "+neu+ " Euro");
 					
 				} catch (Exception e1) {
 				}
