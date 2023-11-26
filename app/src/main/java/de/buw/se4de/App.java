@@ -83,7 +83,10 @@ public class App extends Application {
 					difference[0] = new Datenbankmodifications().sum();
 					neu = difference[0] + "";
 					space.setText("   "+neu+ " Euro");
-					
+					String[] dates2 = new Datenbankmodifications().datesWithDetails();
+					items.removeAll(items);
+					items.addAll(dates2[0],dates2[1],dates2[2],dates2[3],dates2[4],dates2[5],dates2[6],dates2[7],dates2[8],dates2[9]);
+					listView.setItems(items);
 				} catch (Exception e1) {
 				}
 	        });
