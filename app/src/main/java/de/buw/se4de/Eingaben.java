@@ -76,26 +76,33 @@ public class Eingaben {
 		Scene scene = new Scene (layout, 300, 300);
 		
 		abschicken.setOnAction(e-> {
-			String order = "";
+			//ein Array weil sonst kommt die Fehlermeldung:
+			//Local variable order defined in an enclosing scope must be final or effectively final
+			String[] order = { " " };
+			Boolean eintragArt;
 			String note = notiz.getText();
 			String category = userInputField.getText();
-			Double money = 0.0;
+			float money = (float) 0.0;
 			try {
-			money = Double.parseDouble(betrag.getText());
+			money = (float)Double.parseDouble(betrag.getText());
 			}catch(Exception n){
 				
 			}
-			/* toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+			 toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 		            if (newValue != null) {
 		                // A radio button was selected
-		                String order = (((RadioButton) newValue).getText());
+		            	order[0] = ((RadioButton) newValue).getText();
 		            } 
-		        });
-		        */
-			if (order.equals("Eingabe"))
+		       });
+			if (order[0].equals("Eingabe")) {
+				eintragArt = true;
+			}else {
+				eintragArt = false;
+			}
 			System.out.println(note);
+			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
-				new Datenbankmodifications().addGreeting(true, 50, "hla", "hihiih");
+				new Datenbankmodifications().addGreeting(eintragArt,money, note, category);
 			} catch (Exception e1) {
 			}
 		eingabe.close();});

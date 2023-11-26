@@ -2,6 +2,7 @@ package de.buw.se4de;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -22,9 +23,7 @@ public class Datenbankmodifications {
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, IST_AUSGABE BOOLEAN, WERT FLOAT, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
 		stmt.executeUpdate(createQ);
 		
-		stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Halo')");
-		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Hello again!')");
-		//stmt.executeUpdate("INSERT INTO Konto (NAME) VALUES('Bye!')");
+		//stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(false,50,'Haushalt','Halo')");
 
 		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
 		/*
@@ -43,7 +42,7 @@ public class Datenbankmodifications {
 		}
 		return result;
 	}
-	public static void addGreeting(boolean order, double wert, String notiz, String kategorie) throws Exception {
+	public static void addGreeting(boolean order, float wert, String notiz, String kategorie) throws Exception {
 		String result = "";
 
 		Class.forName("org.h2.Driver");
@@ -57,8 +56,16 @@ public class Datenbankmodifications {
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, IST_AUSGABE BOOLEAN, WERT FLOAT, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
 		stmt.executeUpdate(createQ);
 		
-		stmt.executeUpdate("INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES(order,wert,'kategorie','haushalt')");
-		
+		//Wenn man die Parameter direkt einfügt, entsteht ein Syntax Error, weswegen wir einen SQL Placeholder nutzen.
+		String insertQ = "INSERT INTO Konto (IST_AUSGABE, WERT, KATEGORIE, NOTIZ) VALUES (?, ?, ?, ?)";
+	    try (PreparedStatement preparedStatement = conn.prepareStatement(insertQ)) {
+	        preparedStatement.setBoolean(1, order);
+	        preparedStatement.setFloat(2, wert);
+	        preparedStatement.setString(3, kategorie);
+	        preparedStatement.setString(4, notiz);
+
+	        preparedStatement.executeUpdate();
+	    }
 	}
 
 }
