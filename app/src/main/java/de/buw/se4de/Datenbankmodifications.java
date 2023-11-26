@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class Datenbankmodifications {
 	/*
@@ -47,13 +49,14 @@ public class Datenbankmodifications {
 		//Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie und eine Notiz
 		//ToDo Datum:
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
-				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
+				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
 		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
 		
 		//Ausgabe
 		while (selectRS.next()) {
 		    int columns = selectRS.getMetaData().getColumnCount();
+		    System.out.print(columns);
 		    for (int i = 1; i <= columns; i++) {
 		        System.out.printf("%s ", selectRS.getString(i));
 		    }
@@ -61,7 +64,7 @@ public class Datenbankmodifications {
 		}
 		return result;
 	}
-	public void addGreeting(String art, double wert, String notiz, String kategorie) throws Exception {
+	public void addGreeting(String art, double wert, String notiz, String kategorie, Date datum) throws Exception {
 		
 		Class.forName("org.h2.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
@@ -71,17 +74,17 @@ public class Datenbankmodifications {
 		//Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie und eine Notiz
 		//ToDo Datum:
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
-				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
+				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
 		
 		//Wenn man die Parameter direkt einfügt, entsteht ein Syntax Error, weswegen wir einen SQL Placeholder nutzen.
-		String insertQ = "INSERT INTO Konto (EINGABEAUSGABE, WERT, KATEGORIE, NOTIZ) VALUES (?, ?, ?, ?)";
+		String insertQ = "INSERT INTO Konto (EINGABEAUSGABE, WERT, KATEGORIE, NOTIZ, DATUM) VALUES (?, ?, ?, ?, ?)";
 	    try (PreparedStatement preparedStatement = conn.prepareStatement(insertQ)) {
 	        preparedStatement.setString(1, art);
 	        preparedStatement.setDouble(2, wert);
 	        preparedStatement.setString(3, kategorie);
 	        preparedStatement.setString(4, notiz);
-
+	        preparedStatement.setTimestamp(5, new Timestamp(datum.getTime()));
 	        preparedStatement.executeUpdate();
 	    }
 	}
@@ -95,7 +98,7 @@ public class Datenbankmodifications {
 		//Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie und eine Notiz
 		//ToDo Datum:
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
-				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255))";
+				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
 		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
 		

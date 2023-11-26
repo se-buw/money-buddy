@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -14,7 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class Eingaben {
 	/**
 	 * Erster Teil legt das Layout fest. 
@@ -23,8 +26,12 @@ public class Eingaben {
 	public static void display () {
 		Stage eingabe = new Stage();
 		Button abschicken = new Button("Eintragen");
+		Label notizText = new Label("Notiz");
+		Label betragText = new Label("Betrag");
+		Label datumText = new Label("Datum");
 		TextField notiz = new TextField("Kann leer gelassen werden");
 		TextField betrag = new TextField("In Euro");
+		TextField datum = new TextField("DD-MM-YYYY");
 		notiz.setMaxSize(200, 25);
 		betrag.setMaxSize(200, 25);
 		eingabe.setTitle("Neuer Eintrag");
@@ -79,9 +86,10 @@ public class Eingaben {
 		
 		
 		VBox layout = new VBox(10);
-		layout.getChildren().add(notiz);
+		layout.getChildren().add(new HBox(10,notizText,notiz));
 		layout.getChildren().add(radiobuttons);  
-		layout.getChildren().add(betrag);  
+		layout.getChildren().add(new HBox(10,betragText,betrag));  
+		layout.getChildren().add(new HBox(10,datumText,datum));
 		layout.getChildren().add(vbox);  
 		layout.getChildren().add(abschicken); 
 		Scene scene = new Scene (layout, 300, 300);
@@ -89,8 +97,7 @@ public class Eingaben {
 		abschicken.setOnAction(e-> {
 			//ein Array weil sonst kommt die Fehlermeldung:
 			//Local variable order defined in an enclosing scope must be final or effectively final
-			
-			//Boolean eintragArt;
+			String dateString = datum.getText(); // Get the date string from the text field
 			String note = notiz.getText();
 			String category = userInputField.getText();
 			double money =  0.0;
@@ -99,10 +106,12 @@ public class Eingaben {
 			}catch(Exception n){
 				
 			}
-			System.out.print(order+ " HAllo");
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
-				new Datenbankmodifications().addGreeting(order[0],money, note, category);
+				//Damit wir für die Datenbank ein Datums Format haben
+				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+		        Date date = dateFormat.parse(dateString);
+				new Datenbankmodifications().addGreeting(order[0],money, note, category, date);
 			} catch (Exception e1) {
 			}
 		eingabe.close();
