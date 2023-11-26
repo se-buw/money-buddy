@@ -41,10 +41,13 @@ public class App extends Application {
 		  	// Umlaute werden sonst nicht richtig dargestellt
 		  	stage.setTitle("F\u00dcFA");
 	        Text text = new Text("F\u00dcFA - Finanz \u00dcbersicht f\u00fcr Anf\u00e4nger");
-	        Label differenz = new Label("Aktuelle Differenz:");
-	        Label space = new Label(diff);
+	        Label differenz = new Label("   Aktuelle Differenz:     ");
+	        Label space = new Label("   "+diff + " Euro");
+	        Label transaktion = new Label("Letzte Transaktionen");
 	        BorderPane border = new BorderPane();
 	        VBox leftborder = new VBox(10);
+	        VBox rightborder = new VBox(10);
+	        VBox centerborder = new VBox(10);
 	        HBox bottomborder = new HBox(20);
 	        String[] dates = {" "};
 	        try {
@@ -60,14 +63,16 @@ public class App extends Application {
             );
 	        listView.setItems(items);
 	        bottomborder.getChildren().addAll(eingaben);
-	        border.setRight(aktualisieren);
+	        rightborder.getChildren().addAll(eingaben,aktualisieren);
+	        border.setRight(rightborder);
 	        leftborder.getChildren().addAll( differenz, space );
+	        centerborder.getChildren().addAll(transaktion,listView);
 	        text.setFill(Color.BLACK);
 	        text.setFont(Font.font("Comic Sans MS", FontPosture.ITALIC, 20));
 	        border.setTop(new StackPane(text));
 	        border.setBottom(bottomborder);
 	        border.setLeft(leftborder);
-	        border.setCenter(listView);
+	        border.setCenter(centerborder);
 	        
 	        //Eingaben von Ein-und Ausgaben realisieren
 	        
@@ -78,6 +83,7 @@ public class App extends Application {
 					difference[0] = new Datenbankmodifications().sum();
 					neu = difference[0] + "";
 					space.setText(neu);
+					
 				} catch (Exception e1) {
 				}
 	        });
