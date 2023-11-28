@@ -105,19 +105,19 @@ public class Datenbankmodifications {
 	    try (Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "")) {
 	    	
 	        // Anfrage an die Datenbank für die niedrigsten Daten
-	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM ASC LIMIT 10";
+	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM DESC LIMIT 10";
 	        try (PreparedStatement dateStatement = conn.prepareStatement(dateQuery);
 	             ResultSet dateResultSet = dateStatement.executeQuery()) {
-	            int i = 9;
-	            while (dateResultSet.next() && i > -1) {
+	            int i = 0;
+	            while (dateResultSet.next() && i < 10) {
 	                String date = dateResultSet.getString("DATUM");
 	                dates[i] = date;
-	                i--;
+	                i++;
 	            }
 	        }
 
 	        // Vollständige Zeilen abrufen
-	        String detailsQuery = "SELECT * FROM Konto WHERE DATUM IN (" + String.join(",", Collections.nCopies(10, "?")) + ") ORDER BY DATUM ASC";
+	        String detailsQuery = "SELECT * FROM Konto WHERE DATUM IN (" + String.join(",", Collections.nCopies(10, "?")) + ") ORDER BY DATUM DESC";
 	        try (PreparedStatement detailsStatement = conn.prepareStatement(detailsQuery)) {
 	            // Parameter für die IN-Klausel setzen
 	            for (int j = 0; j < 10; j++) {
@@ -129,7 +129,7 @@ public class Datenbankmodifications {
 	                while (detailsResultSet.next() && j < 10) {
 	                    String zeile = "";
 	                    int columns = detailsResultSet.getMetaData().getColumnCount();
-	                    for (int k = 2; k <= columns; k++) {
+	                    for (int k = 2; k < columns; k++) {
 	                        zeile = zeile + detailsResultSet.getString(k) + " ";
 	                    }
 	                    dates[j] += ": " + zeile.trim(); // Trim, um Leerzeichen am Ende zu entfernen
