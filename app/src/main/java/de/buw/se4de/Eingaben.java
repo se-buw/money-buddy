@@ -18,7 +18,13 @@ import javafx.stage.Stage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
+import javafx.scene.paint.*;
 public class Eingaben {
+	
+	static String notizTextString = "Kann leer gelassen werden";
+	static boolean categorySelected = false;
+	
 	/**
 	 * Erster Teil legt das Layout fest. 
 	 * Zweiter Teil ist die Verbindung mit der Datenbank
@@ -29,9 +35,16 @@ public class Eingaben {
 		Label notizText = new Label("Notiz");
 		Label betragText = new Label("Betrag");
 		Label datumText = new Label("Datum");
-		TextField notiz = new TextField("Kann leer gelassen werden");
+		Label ErrorText = new Label();
+		ErrorText.setTextFill(Color.RED);
+		TextField notiz = new TextField(notizTextString);
 		TextField betrag = new TextField("In Euro");
-		TextField datum = new TextField("DD-MM-YYYY");
+		TextField datumDay = new TextField("DD");
+		datumDay.setMaxWidth(50);
+		TextField datumMonth = new TextField("MM");
+		datumMonth.setMaxWidth(50);
+		TextField datumYear = new TextField("YYYY");
+		datumYear.setMaxWidth(50);
 		notiz.setMaxSize(200, 25);
 		betrag.setMaxSize(200, 25);
 		eingabe.setTitle("Neuer Eintrag");
@@ -46,6 +59,9 @@ public class Eingaben {
 		HBox radiobuttons = new HBox(5);
 		radiobuttons.getChildren().add(art);
 		radiobuttons.getChildren().add(art2);
+		Label userInputField = new Label();
+		
+		
 		
 		//TODO Kategorien müssen anpassbar sein.
 		String[] order = {""};
@@ -68,14 +84,14 @@ public class Eingaben {
 	            	 order[0] = "Ausgabe";
 	            }
 	       });
-
-        // Create a TextField for user input
-        TextField userInputField = new TextField();
+        
 
         // Überprüft eine Änderung, was ausgewählt wurde.
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             // Display the selected option in the TextField
             userInputField.setText(newValue);
+            categorySelected = true;
+            
         });
 
         VBox vbox = new VBox(10); // 10 is the spacing between nodes
@@ -89,30 +105,60 @@ public class Eingaben {
 		layout.getChildren().add(new HBox(10,notizText,notiz));
 		layout.getChildren().add(radiobuttons);  
 		layout.getChildren().add(new HBox(10,betragText,betrag));  
-		layout.getChildren().add(new HBox(10,datumText,datum));
+		layout.getChildren().add(new HBox(10,datumText,datumDay,datumMonth,datumYear));
 		layout.getChildren().add(vbox);  
-		layout.getChildren().add(abschicken); 
-		Scene scene = new Scene (layout, 300, 300);
+		layout.getChildren().add(abschicken);
+		layout.getChildren().add(ErrorText);
+		Scene scene = new Scene (layout, 400, 400);
+		
 		
 		abschicken.setOnAction(e-> {
 			//ein Array weil sonst kommt die Fehlermeldung:
 			//Local variable order defined in an enclosing scope must be final or effectively final
-			String dateString = datum.getText(); // Get the date string from the text field
+			String dateStringDay = datumDay.getText(); // Get the date string from the text field
+			String dateStringMonth = datumMonth.getText();
+			String dateStringYear = datumYear.getText();
 			String note = notiz.getText();
+			if (note.equals(notizTextString))
+			{
+				note = "Transaktion";
+			}
+			
+			if (!categorySelected) {
+				ErrorText.setText("Bitte w\u00e4hlen Sie eine Kategorie aus");
+				return;
+			}
+			
 			String category = userInputField.getText();
 			double money =  0.0;
 			try {
-			money = Double.parseDouble(betrag.getText());
+				money = Double.parseDouble(betrag.getText());
 			}catch(Exception n){
-				
+				ErrorText.setText("Bitte korrekten Betrag eingeben");
+				return;
 			}
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
 				//Damit wir für die Datenbank ein Datums Format haben
-				SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
-		        Date date = dateFormat.parse(dateString);
-				new Datenbankmodifications().addGreeting(order[0],money, note, category, date);
+				//SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+		        //Date date = dateFormat.parse(dateStringDay);
+		        Calendar calendar = Calendar.getInstance();
+		        int day = Integer.parseInt(dateStringDay);
+		        int month = Integer.parseInt(dateStringMonth)-1;
+		        int year = Integer.parseInt(dateStringYear);
+		        calendar.set(year,month,1);
+		        if(day <= calendar.getActualMaximum(calendar.DAY_OF_MONTH) && month < 13 && month > 0 && year > 0 && day > 0){
+		        	calendar.set(year,month,day);
+		        }
+		        else {
+		        	ErrorText.setText("Bitte korrektes Datum eigeben");
+		        	return;
+		        }
+		        
+				new Datenbankmodifications().addGreeting(order[0],money, note, category, calendar);
 			} catch (Exception e1) {
+				ErrorText.setText("Bitte korrektes Datum eigeben");
+				return;
 			}
 		eingabe.close();
 		});

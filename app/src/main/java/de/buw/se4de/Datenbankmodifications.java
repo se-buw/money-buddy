@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Calendar;
 
 public class Datenbankmodifications {
 	public String getGreeting() throws Exception {
@@ -38,7 +39,7 @@ public class Datenbankmodifications {
 		return result;
 	}
 
-	public void addGreeting(String art, double wert, String notiz, String kategorie, Date datum) throws Exception {
+	public void addGreeting(String art, double wert, String notiz, String kategorie, Calendar calendar) throws Exception {
 
 		Class.forName("org.h2.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
@@ -60,7 +61,7 @@ public class Datenbankmodifications {
 			preparedStatement.setDouble(2, wert);
 			preparedStatement.setString(3, kategorie);
 			preparedStatement.setString(4, notiz);
-			preparedStatement.setTimestamp(5, new Timestamp(datum.getTime()));
+			preparedStatement.setTimestamp(5, new Timestamp(calendar.getTimeInMillis()));
 			preparedStatement.executeUpdate();
 		}
 	}
