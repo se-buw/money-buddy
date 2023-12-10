@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Calendar;
+import javafx.util.Pair;
+import java.util.ArrayList;
 
 public class Datenbankmodifications {
 	public String getGreeting() throws Exception {
@@ -70,7 +72,8 @@ public class Datenbankmodifications {
 	 * @return Die Summe wenn man alle 
 	 * @throws Exception
 	 */
-	public double sum() throws Exception {
+	//gibt eine ArrayList mit den jeweiligen Geldeträgen der Kategorien zurück
+	public ArrayList sum() throws Exception {
 		double value = 0;
 		Class.forName("org.h2.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
@@ -82,16 +85,52 @@ public class Datenbankmodifications {
 		stmt.executeUpdate(createQ);
 		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
 
+		double mieteSum = 0;
+		double lebensmittelSum = 0;
+		double freizeitSum = 0;
+		double gehaltSum = 0;
+		double geschenkSum = 0;
+		
 		while (selectRS.next()) {
 			if (selectRS.getString(2).equals("Ausgabe")) {
 				value -= selectRS.getDouble(3);
-			} else {
+				if (selectRS.getString(4).equals("Miete"))
+				{
+					mieteSum += selectRS.getDouble(3);
+				}
+				else if (selectRS.getString(4).equals("Lebensmittel"))
+				{
+					lebensmittelSum += selectRS.getDouble(3);
+				}
+				else if (selectRS.getString(4).equals("Freizeit"))
+				{
+					freizeitSum += selectRS.getDouble(3);
+				}
+			} 
+			
+			else {
 				value += selectRS.getDouble(3);
+				if (selectRS.getString(4).equals("Gehalt"))
+				{
+					gehaltSum += selectRS.getDouble(3);
+				}
+				else if (selectRS.getString(4).equals("Geschenke"))
+				{
+					geschenkSum += selectRS.getDouble(3);
+				}
 			}
+			
 
 		}
 
-		return value;
+		ArrayList<Double> returnList = new ArrayList<Double>();
+		returnList.add(value);
+		returnList.add(mieteSum);
+		returnList.add(lebensmittelSum);
+		returnList.add(freizeitSum);
+		returnList.add(gehaltSum);
+		returnList.add(geschenkSum);
+		return returnList;
 	}
 
 	/**
@@ -99,47 +138,62 @@ public class Datenbankmodifications {
 	 * @return Eine Array mit den Datenbankeinträgen mit den jüngsten Daten
 	 * @throws Exception
 	 */
-	public String[] datesWithDetails() throws Exception {
-		//vorerst nur die 10 jüngsten
-	    String[] dates = new String[10];
 
+	public Pair<Integer, String[]> datesWithDetails() throws Exception {
+	    String[] dates1 = new String[1000];
+	    int resultSetSize = 0;
+	    
+	    
 	    try (Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "")) {
 	    	
+	    	
 	        // Anfrage an die Datenbank für die niedrigsten Daten
-	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM DESC LIMIT 10";
+	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM DESC";
 	        try (PreparedStatement dateStatement = conn.prepareStatement(dateQuery);
 	             ResultSet dateResultSet = dateStatement.executeQuery()) {
 	            int i = 0;
-	            while (dateResultSet.next() && i < 10) {
+	            while (dateResultSet.next()) {
 	                String date = dateResultSet.getString("DATUM");
-	                dates[i] = date;
+	                dates1[i] = date;
 	                i++;
+	                resultSetSize++;
 	            }
+	            //dateResultSet.last();
+	            // = dateResultSet.getRow();
 	        }
+	        catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	        // Vollständige Zeilen abrufen
-	        String detailsQuery = "SELECT * FROM Konto WHERE DATUM IN (" + String.join(",", Collections.nCopies(10, "?")) + ") ORDER BY DATUM DESC";
+	        String detailsQuery = "SELECT * FROM Konto WHERE DATUM IN (" + String.join(",", Collections.nCopies(resultSetSize, "?")) + ") ORDER BY DATUM DESC";
 	        try (PreparedStatement detailsStatement = conn.prepareStatement(detailsQuery)) {
 	            // Parameter für die IN-Klausel setzen
-	            for (int j = 0; j < 10; j++) {
-	                detailsStatement.setString(j + 1, dates[j]);
+	            for (int j = 0; j < resultSetSize; j++) {
+	                detailsStatement.setString(j + 1, dates1[j]);
 	            }
 
 	            try (ResultSet detailsResultSet = detailsStatement.executeQuery()) {
 	                int j = 0;
-	                while (detailsResultSet.next() && j < 10) {
+	                while (detailsResultSet.next() && j < resultSetSize) {
 	                    String zeile = "";
 	                    int columns = detailsResultSet.getMetaData().getColumnCount();
 	                    for (int k = 2; k < columns; k++) {
 	                        zeile = zeile + detailsResultSet.getString(k) + " ";
 	                    }
-	                    dates[j] += ": " + zeile.trim(); // Trim, um Leerzeichen am Ende zu entfernen
+	                    dates1[j] += ": " + zeile.trim(); // Trim, um Leerzeichen am Ende zu entfernen
 	                    j++;
 	                }
 	            }
 	        }
 	    }
-
-	    return dates;
+	    String[] dates = new String[resultSetSize];
+	    for (int i = 0; i < resultSetSize; i++)
+	    {
+	    	dates[i] = dates1[i];
+	    }
+	    Pair<Integer, String[]> pair = new Pair(resultSetSize, dates);
+	    return pair;
 	}
 }
