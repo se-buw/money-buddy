@@ -7,13 +7,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Calendar;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
 public class Datenbankmodifications {
-	public String getGreeting() throws Exception {
+	public String getTransaction() throws Exception {
 
 		String result = "";
 
@@ -25,6 +24,7 @@ public class Datenbankmodifications {
 		// Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie
 		// und eine Notiz
 		// ToDo Datum:
+
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
@@ -41,7 +41,7 @@ public class Datenbankmodifications {
 		return result;
 	}
 
-	public void addGreeting(String art, double wert, String notiz, String kategorie, Calendar calendar) throws Exception {
+	public void addTransaction(String art, double wert, String notiz, String kategorie, Calendar calendar) throws Exception {
 
 		Class.forName("org.h2.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
@@ -57,7 +57,7 @@ public class Datenbankmodifications {
 
 		// Wenn man die Parameter direkt einfügt, entsteht ein Syntax Error, weswegen
 		// wir einen SQL Placeholder nutzen.
-		String insertQ = "INSERT INTO Konto (EINGABEAUSGABE, WERT, KATEGORIE, NOTIZ, DATUM) VALUES (?, ?, ?, ?, ?)";
+				String insertQ = "INSERT INTO Konto (EINGABEAUSGABE, WERT, KATEGORIE, NOTIZ, DATUM) VALUES (?, ?, ?, ?, ?)";
 		try (PreparedStatement preparedStatement = conn.prepareStatement(insertQ)) {
 			preparedStatement.setString(1, art);
 			preparedStatement.setDouble(2, wert);
@@ -134,7 +134,7 @@ public class Datenbankmodifications {
 	}
 
 	/**
-	 * Wir senden zwei Anfragen an die Datenbankk und printen dann das Ergebnis aus.
+	 * Wir senden zwei Anfragen an die Datenbank und printen dann das Ergebnis aus.
 	 * @return Eine Array mit den Datenbankeinträgen mit den jüngsten Daten
 	 * @throws Exception
 	 */

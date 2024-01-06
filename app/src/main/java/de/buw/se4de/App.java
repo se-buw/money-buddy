@@ -31,18 +31,21 @@ import javafx.scene.text.FontPosture;
 
 
 public class App extends Application {
-		
 
 	  @Override
 	    public void start(Stage stage) {
 		  	//Setup
 		  
 		  	ArrayList<Double> difference = new ArrayList<Double>(10);
+
+
 		  	try {
 		  		difference = new Datenbankmodifications().sum();
 			} catch (Exception e) {
 				System.out.println("Hier stimmt was nicht");
 			}
+
+
 		  	String diff = difference.get(0) + "";
 		  	Button eingaben = new Button("Transaktion hinzuf\u00fcgen");
 		  	Button aktualisieren = new Button("Aktualisieren");
@@ -55,7 +58,7 @@ public class App extends Application {
 	        Label transaktion = new Label("Letzte Transaktionen");
 	        BorderPane border = new BorderPane();
 	        VBox leftborder = new VBox(2);
-	        
+	        //hier werden nur Fonts festgelegt
 	        Label ausgaben = new Label("   " + "Ausgaben:");
 	        ausgaben.setFont(Font.font("Standart",FontWeight.BOLD,15));
 	        Label mieteName = new Label("   " + "F\u00fcr Miete:");
@@ -75,7 +78,7 @@ public class App extends Application {
 	        geschenkeName.setFont(Font.font("Standart",FontPosture.ITALIC,13));
 	        Label gehaltZahl = new Label("");
 	        Label geschenkeZahl = new Label("");
-	        
+//irgendwelche Spaces, weiß nicht wozu die gehören
 	        Label mieteSpace = new Label("");
 	        Label lebensmittelSpace = new Label("");
 	        Label freizeitSpace = new Label("");
@@ -83,13 +86,12 @@ public class App extends Application {
 	        Label geschenkeSpace = new Label("");
 	        
 	        // berechnet den Prozentualen Geldwert jeder Kategorie
-	        double sumAusgaben = 0;
-	        
-	        for (int i = 1; i < 4; ++i)
-	        {
-	        	sumAusgaben += difference.get(i);
-	        }
-	        
+
+		  double sumAusgaben = 0;
+		  for (int i = 1; i < 4; ++i) {
+			  sumAusgaben += difference.get(i);
+		  }
+
 	        double sumEinnahmen = 0;
 	        
 	        for (int i = 4; i < 6; ++i)
@@ -142,6 +144,7 @@ public class App extends Application {
 	        //Eingaben von Ein-und Ausgaben realisieren
 	        
 	        eingaben.setOnAction(e -> Eingaben.display());
+			//sobald auf aktualisieren gedrückt wird, werden erst die neuen Transaktionen aktualisiert
 	        aktualisieren.setOnAction(e->{ 
 	        	try {
 	        		String neu = "";
@@ -197,6 +200,6 @@ public class App extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch();
-		new Datenbankmodifications().getGreeting();
+		new Datenbankmodifications().getTransaction();
 	}
 }
