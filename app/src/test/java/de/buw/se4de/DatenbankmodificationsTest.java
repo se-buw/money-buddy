@@ -11,6 +11,4 @@ class DatenbankmodificationsTest {
         assertEquals(1, 1);
     }
 
-
-
 }
