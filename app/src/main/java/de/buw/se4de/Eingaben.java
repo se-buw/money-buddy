@@ -178,7 +178,7 @@ public class Eingaben {
 					return;
 				}
 		        
-				new Datenbankmodifications().addGreeting(order[0],money, note, category, calendar);
+				new Datenbankmodifications().addGreeting("jdbc:h2:./src/main/resources/FUFA", order[0],money, note, category, calendar);
 			} catch (Exception e1) {
 				ErrorText.setText("Bitte korrektes Datum eigeben");
 				return;

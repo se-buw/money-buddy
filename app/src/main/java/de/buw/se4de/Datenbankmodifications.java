@@ -13,12 +13,13 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 public class Datenbankmodifications {
-	public String getGreeting() throws Exception {
+	// getTransaction
+	public String getGreeting(String url) throws Exception {
 
-		String result = "";
+		String result = ""; //hat keine Funktion
 
-		Class.forName("org.h2.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
+		Class.forName("org.h2.Driver"); //hat keine FUnktion
+		Connection conn = DriverManager.getConnection(url, "", "");
 
 		Statement stmt = conn.createStatement();
 
@@ -28,8 +29,8 @@ public class Datenbankmodifications {
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
-		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
-
+		//ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
+		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto WHERE ID = (SELECT MAX(ID) FROM Konto)");
 		// Ausgabe
 		while (selectRS.next()) {
 			int columns = selectRS.getMetaData().getColumnCount();
@@ -38,13 +39,31 @@ public class Datenbankmodifications {
 			}
 			System.out.println(); // Move to the next line for the next row
 		}
-		return result;
+
+
+
+		//Test für Tests
+		Statement stmt2 = conn.createStatement();
+		ResultSet selectRS2 = stmt2.executeQuery("SELECT * FROM Konto WHERE ID = (SELECT MAX(ID) FROM Konto)");
+
+		selectRS2.next();
+		String art = selectRS2.getString(2);
+		double betrag = selectRS2.getDouble(3);
+		String notiz =  selectRS2.getString(4);
+		String kategorie = selectRS2.getString(5);
+		String datum = selectRS2.getString(6);
+
+		System.out.println("*" + datum + "*");
+
+		return result; //hat keine Funktion
 	}
 
-	public void addGreeting(String art, double wert, String notiz, String kategorie, Calendar calendar) throws Exception {
 
-		Class.forName("org.h2.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
+	// addTransaction
+	public void addGreeting(String url, String art, double wert, String notiz, String kategorie, Calendar calendar) throws Exception {
+
+		Class.forName("org.h2.Driver"); //hat keine Funktion
+		Connection conn = DriverManager.getConnection(url, "", "");
 
 		Statement stmt = conn.createStatement();
 
@@ -67,16 +86,19 @@ public class Datenbankmodifications {
 			preparedStatement.executeUpdate();
 		}
 	}
+
+
+
 	/**
 	 * 
 	 * @return Die Summe wenn man alle 
 	 * @throws Exception
 	 */
 	//gibt eine ArrayList mit den jeweiligen Geldeträgen der Kategorien zurück
-	public ArrayList sum() throws Exception {
+	public ArrayList sum(String url) throws Exception {
 		double value = 0;
 		Class.forName("org.h2.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "");
+		Connection conn = DriverManager.getConnection(url, "", "");
 
 		Statement stmt = conn.createStatement();
 
@@ -139,12 +161,12 @@ public class Datenbankmodifications {
 	 * @throws Exception
 	 */
 
-	public Pair<Integer, String[]> datesWithDetails() throws Exception {
+	public Pair<Integer, String[]> datesWithDetails(String url) throws Exception {
 	    String[] dates1 = new String[1000];
 	    int resultSetSize = 0;
 	    
 	    
-	    try (Connection conn = DriverManager.getConnection("jdbc:h2:./src/main/resources/FUFA", "", "")) {
+	    try (Connection conn = DriverManager.getConnection(url, "", "")) {
 	    	
 	    	
 	        // Anfrage an die Datenbank für die niedrigsten Daten
