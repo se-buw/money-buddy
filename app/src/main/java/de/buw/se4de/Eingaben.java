@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import javafx.scene.paint.*;
+import javafx.util.Pair;
+
 public class Eingaben {
 	
 	static String notizTextString = "Kann leer gelassen werden";
@@ -29,6 +31,34 @@ public class Eingaben {
 	 * Erster Teil legt das Layout fest. 
 	 * Zweiter Teil ist die Verbindung mit der Datenbank
 	 */
+	public static String note_test(String note, String notizTextString) {
+		if (note.equals(notizTextString)) {
+			note = "Transaktion";
+		}
+		return note;
+	}//prüft ob die Notiz im Notizfeld geändert wurde oder nicht, falls nein wird die Notiz als Transaktion gesetzt
+
+	public static Pair<Boolean, Double> money_parse_test(String geld_betrag, Double money) {
+		try {
+			money = Double.parseDouble(geld_betrag);
+			Pair<Boolean, Double> returnPair = new Pair(true, money);
+			return returnPair;
+		} catch (Exception var5) {
+			Pair<Boolean, Double> returnPair = new Pair(false, money);
+			return returnPair;
+		}
+	}//prüft, ob die Eingabe ein Zahlenwert oder etwas anderes darstellt,
+	 //wenn es eine Zahl ist gibt es sie zurück, falls nicht gib falsch
+
+	public static Boolean calendar_test(Calendar calendar, int day, int month, int year) {
+		if (day <= calendar.getActualMaximum(5) && month < 13 && month > 0 && year > 0 && day > 0) {
+			calendar.set(year, month, day);
+			return true;
+		} else {
+			return false;
+		}
+	}//prüft, ob die angegebenen Daten ein korrektes Datum ergeben
+
 	public static void display () {
 		Stage eingabe = new Stage();
 		Button abschicken = new Button("Eintragen");
@@ -96,11 +126,7 @@ public class Eingaben {
 
         VBox vbox = new VBox(10); // 10 is the spacing between nodes
         vbox.getChildren().addAll(listView, userInputField);
-		
-		
-		
-		
-		
+
 		VBox layout = new VBox(10);
 		layout.getChildren().add(new HBox(10,notizText,notiz));
 		layout.getChildren().add(radiobuttons);  
@@ -119,10 +145,9 @@ public class Eingaben {
 			String dateStringMonth = datumMonth.getText();
 			String dateStringYear = datumYear.getText();
 			String note = notiz.getText();
-			if (note.equals(notizTextString))
-			{
-				note = "Transaktion";
-			}
+			boolean test;
+
+			note = note_test(note, notizTextString);
 			
 			if (!categorySelected) {
 				ErrorText.setText("Bitte w\u00e4hlen Sie eine Kategorie aus");
@@ -130,11 +155,11 @@ public class Eingaben {
 			}
 			
 			String category = userInputField.getText();
-			double money =  0.0;
-			try {
-				money = Double.parseDouble(betrag.getText());
-			}catch(Exception n){
-				ErrorText.setText("Bitte korrekten Betrag eingeben");
+			double money = 0;
+			String geld_betrag = betrag.getText();
+			test = (Boolean)money_parse_test(geld_betrag, money).getKey();
+			if (!test){
+				ErrorText.setText("Bitte geben Sie einen gültigen Batrag an");
 				return;
 			}
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
@@ -146,14 +171,12 @@ public class Eingaben {
 		        int day = Integer.parseInt(dateStringDay);
 		        int month = Integer.parseInt(dateStringMonth)-1;
 		        int year = Integer.parseInt(dateStringYear);
-		        calendar.set(year,month,1);
-		        if(day <= calendar.getActualMaximum(calendar.DAY_OF_MONTH) && month < 13 && month > 0 && year > 0 && day > 0){
-		        	calendar.set(year,month,day);
-		        }
-		        else {
-		        	ErrorText.setText("Bitte korrektes Datum eigeben");
-		        	return;
-		        }
+		        calendar.set(year, month,1);
+				test = calendar_test(calendar, day, month, year);
+				if (!test){
+					ErrorText.setText("Bitte geben Sie ein gültiges Datum an");
+					return;
+				}
 		        
 				new Datenbankmodifications().addGreeting(order[0],money, note, category, calendar);
 			} catch (Exception e1) {
