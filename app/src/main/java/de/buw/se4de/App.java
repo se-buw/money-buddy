@@ -38,7 +38,7 @@ public class App extends Application {
 				sum += difference.get(i);
 			}
 			return sum;
-		}
+		}//bekommt ein Array und bekommt zwei Grenzen und summiert die Werte im Array zwischen diesen Grenzen
 
 		@Override
 	    public void start(Stage stage) {

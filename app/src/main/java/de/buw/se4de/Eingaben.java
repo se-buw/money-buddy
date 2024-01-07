@@ -36,7 +36,7 @@ public class Eingaben {
 			note = "Transaktion";
 		}
 		return note;
-	}//hab ich
+	}//prüft ob die Notiz im Notizfeld geändert wurde oder nicht, falls nein wird die Notiz als Transaktion gesetzt
 
 	public static Pair<Boolean, Double> money_parse_test(String geld_betrag, Double money) {
 		try {
@@ -47,7 +47,8 @@ public class Eingaben {
 			Pair<Boolean, Double> returnPair = new Pair(false, money);
 			return returnPair;
 		}
-	}
+	}//prüft, ob die Eingabe ein Zahlenwert oder etwas anderes darstellt,
+	 //wenn es eine Zahl ist gibt es sie zurück, falls nicht gib falsch
 
 	public static Boolean calendar_test(Calendar calendar, int day, int month, int year) {
 		if (day <= calendar.getActualMaximum(5) && month < 13 && month > 0 && year > 0 && day > 0) {
@@ -56,12 +57,7 @@ public class Eingaben {
 		} else {
 			return false;
 		}
-	}
-
-
-
-
-
+	}//prüft, ob die angegebenen Daten ein korrektes Datum ergeben
 
 	public static void display () {
 		Stage eingabe = new Stage();
