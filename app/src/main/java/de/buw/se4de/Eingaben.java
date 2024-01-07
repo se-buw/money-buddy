@@ -51,7 +51,8 @@ public class Eingaben {
 	 //wenn es eine Zahl ist gibt es sie zurück, falls nicht gib falsch
 
 	public static Boolean calendar_test(Calendar calendar, int day, int month, int year) {
-		if (day <= calendar.getActualMaximum(5) && month < 13 && month > 0 && year > 0 && day > 0) {
+		month = month - 1;
+		if (day <= calendar.getActualMaximum(calendar.DAY_OF_MONTH) && month < 13 && month > 0 && year > 0 && day > 0) {
 			calendar.set(year, month, day);
 			return true;
 		} else {
@@ -168,11 +169,12 @@ public class Eingaben {
 				//SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
 		        //Date date = dateFormat.parse(dateStringDay);
 		        Calendar calendar = Calendar.getInstance();
+				/*
 		        int day = Integer.parseInt(dateStringDay);
 		        int month = Integer.parseInt(dateStringMonth)-1;
 		        int year = Integer.parseInt(dateStringYear);
-		        calendar.set(year, month,1);
-				test = calendar_test(calendar, day, month, year);
+		        calendar.set(year, month,1);*/
+				test = calendar_test(calendar, Integer.parseInt(dateStringDay), Integer.parseInt(dateStringMonth), Integer.parseInt(dateStringYear));
 				if (!test){
 					ErrorText.setText("Bitte geben Sie ein gültiges Datum an");
 					return;
