@@ -72,7 +72,7 @@ public class Datenbankmodifications {
 	 * @return Die Summe wenn man alle 
 	 * @throws Exception
 	 */
-	//gibt eine ArrayList mit den jeweiligen Geldeträgen der Kategorien zurück
+	//gibt eine ArrayList mit den jeweiligen Geldbeträgen der Kategorien zurück
 	public ArrayList sum() throws Exception {
 		double value = 0;
 		Class.forName("org.h2.Driver");

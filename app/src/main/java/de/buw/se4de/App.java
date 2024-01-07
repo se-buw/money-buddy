@@ -32,18 +32,25 @@ import javafx.scene.text.FontPosture;
 
 public class App extends Application {
 
+		public static double sum (ArrayList<Double> difference, int bound_left, int bound_right){
+			double sum = 0;
+			for (int i = bound_left; i < bound_right; ++i) {
+				sum += difference.get(i);
+			}
+			return sum;
+
+		}
 	  @Override
 	    public void start(Stage stage) {
 		  	//Setup
-		  
-		  	ArrayList<Double> difference = new ArrayList<Double>(10);
 
+		  	ArrayList<Double> difference = new ArrayList<Double>(10);
 
 		  	try {
 		  		difference = new Datenbankmodifications().sum();
 			} catch (Exception e) {
 				System.out.println("Hier stimmt was nicht");
-			}
+			}//scheint zum debuggen zu sein und der Try and Catch hätte damit eigentlich nichts mehr hier zu suchen
 
 
 		  	String diff = difference.get(0) + "";
@@ -84,33 +91,24 @@ public class App extends Application {
 	        Label freizeitSpace = new Label("");
 	        Label gehaltSpace = new Label("");
 	        Label geschenkeSpace = new Label("");
-	        
+
 	        // berechnet den Prozentualen Geldwert jeder Kategorie
 
-		  double sumAusgaben = 0;
-		  for (int i = 1; i < 4; ++i) {
-			  sumAusgaben += difference.get(i);
-		  }
+		  	double sumAusgaben = sum(difference, 1,4);
+		  	double sumEinnahmen = sum(difference, 4,6);;
 
-	        double sumEinnahmen = 0;
-	        
-	        for (int i = 4; i < 6; ++i)
-	        {
-	        	sumEinnahmen += difference.get(i);
-	        }
-	        
-	        double mieteProzent = difference.get(1) / sumAusgaben * 100; 
-	        double lebensmittelProzent = difference.get(2) / sumAusgaben * 100; 
-	        double freizeitProzent = difference.get(3) / sumAusgaben * 100; 
-	        double gehaltProzent = difference.get(4) / sumEinnahmen * 100; 
-	        double geschenkeProzent = difference.get(5) / sumEinnahmen * 100; 
-	        
+			double mieteProzent = difference.get(1) / sumAusgaben * 100;
+			double lebensmittelProzent = difference.get(2) / sumAusgaben * 100;
+			double freizeitProzent = difference.get(3) / sumAusgaben * 100;
+			double gehaltProzent = difference.get(4) / sumEinnahmen * 100;
+			double geschenkeProzent = difference.get(5) / sumEinnahmen * 100;
+
 	        mieteZahl.setText("   " + String.valueOf(difference.get(1)) + " Euro - " + String.format("%.2f",mieteProzent) + " \u0025");
             lebensmittelZahl.setText("   " + String.valueOf(difference.get(2)) + " Euro - " + String.format("%.2f",lebensmittelProzent) + " \u0025");
             freizeitZahl.setText("   " + String.valueOf(difference.get(3)) + " Euro - " + String.format("%.2f",freizeitProzent) + " \u0025");
             gehaltZahl.setText("   " + String.valueOf(difference.get(4)) + " Euro - " + String.format("%.2f",gehaltProzent) + " \u0025");
             geschenkeZahl.setText("   " + String.valueOf(difference.get(5)) + " Euro - " + String.format("%.2f",geschenkeProzent) + " \u0025");
-	        
+
 	        VBox rightborder = new VBox(10);
 	        VBox centerborder = new VBox(10);
 	        HBox bottomborder = new HBox(20);
@@ -118,8 +116,8 @@ public class App extends Application {
 	        Pair<Integer, String[]> pair = new Pair(0,dates);
 	        //String[] dates = {" "};
 	        int datesSize;
-	        
-	        
+
+
 	        try {
 				 pair = new Datenbankmodifications().datesWithDetails();
 			} catch (Exception e) {
@@ -140,47 +138,36 @@ public class App extends Application {
 	        border.setBottom(bottomborder);
 	        border.setLeft(leftborder);
 	        border.setCenter(centerborder);
-	        
+
 	        //Eingaben von Ein-und Ausgaben realisieren
-	        
+
 	        eingaben.setOnAction(e -> Eingaben.display());
 			//sobald auf aktualisieren gedrückt wird, werden erst die neuen Transaktionen aktualisiert
-	        aktualisieren.setOnAction(e->{ 
+	        aktualisieren.setOnAction(e->{
 	        	try {
 	        		String neu = "";
 	        		ArrayList<Double> difference1 = new ArrayList<Double>(10);
 					difference1 = new Datenbankmodifications().sum();
 					neu = difference1.get(0) + "";
 					space.setText("   "+neu+ " Euro");
-					
-					double sumAusgaben1 = 0;
-			        
-			        for (int i = 1; i < 4; ++i)
-			        {
-			        	sumAusgaben1 += difference1.get(i);
-			        }
-			        
-			        double sumEinnahmen1 = 0;
-			        
-			        for (int i = 4; i < 6; ++i)
-			        {
-			        	sumEinnahmen1 += difference1.get(i);
-			        }
-			        
-			        double mieteProzent1 = difference1.get(1) / sumAusgaben1 * 100; 
-			        double lebensmittelProzent1 = difference1.get(2) / sumAusgaben1 * 100; 
-			        double freizeitProzent1 = difference1.get(3) / sumAusgaben1 * 100; 
-			        double gehaltProzent1 = difference1.get(4) / sumEinnahmen1 * 100; 
-			        double geschenkeProzent1 = difference1.get(5) / sumEinnahmen1 * 100; 
-			        
-					
+
+					double sumAusgaben1 = sum(difference1, 1,4);;
+			        double sumEinnahmen1 = sum(difference1, 4,6);;
+
+			        double mieteProzent1 = difference1.get(1) / sumAusgaben1 * 100;
+			        double lebensmittelProzent1 = difference1.get(2) / sumAusgaben1 * 100;
+			        double freizeitProzent1 = difference1.get(3) / sumAusgaben1 * 100;
+			        double gehaltProzent1 = difference1.get(4) / sumEinnahmen1 * 100;
+			        double geschenkeProzent1 = difference1.get(5) / sumEinnahmen1 * 100;
+
+
 					mieteZahl.setText("   " + String.valueOf(difference1.get(1)) + " Euro - " + String.format("%.2f",mieteProzent1) + " \u0025");
 		            lebensmittelZahl.setText("   " + String.valueOf(difference1.get(2)) + " Euro - " + String.format("%.2f",lebensmittelProzent1) + " \u0025");
 		            freizeitZahl.setText("   " + String.valueOf(difference1.get(3)) + " Euro - " + String.format("%.2f",freizeitProzent1) + " \u0025");
 		            gehaltZahl.setText("   " + String.valueOf(difference1.get(4)) + " Euro - " + String.format("%.2f",gehaltProzent1) + " \u0025");
 		            geschenkeZahl.setText("   " + String.valueOf(difference1.get(5)) + " Euro - " + String.format("%.2f",geschenkeProzent1) + " \u0025");
-					
-					
+
+
 					Pair<Integer, String[]> pair2;
 					pair2 = new Datenbankmodifications().datesWithDetails();
 					items.removeAll(items);

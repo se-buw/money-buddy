@@ -22,6 +22,7 @@ public class Eingaben {
 	static String notizTextString = "Kann leer gelassen werden";
 	static boolean categorySelected = false;
 
+	//prüft, ob seperate Notiz erstellt wurde oder nicht, falls nicht wird einfach Transaktion ausgegeben
 	public static String note_test(String note, String default_note){
 		if (note.equals(notizTextString))
 		{
@@ -29,7 +30,6 @@ public class Eingaben {
 		}
 		return note;
 	}
-	//prüft, ob seperate Notiz erstellt wurde oder nicht, falls nicht wird einfach Transaktion ausgegeben
 	//Übergabe: note = dass was im Notizfeld steht, deafultnote = Kann leer gelassen werden Rückgabe: falls Feld geändert wurde, neue Notiz, falls default stehenbleibt, Transaktion
 	public static boolean category_test(Label ErrorText, boolean categorySelected){  //prüft, ob Kategorie gewählt wurde oder nicht
 		if (!categorySelected) {
