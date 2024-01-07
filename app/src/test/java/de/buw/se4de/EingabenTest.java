@@ -17,9 +17,6 @@ class EingabenTest {
         Eingaben e = new Eingaben();
         String result = e.note_test("Notiz", "Kann leer gelassen werden");
         assertEquals("Notiz", result);
-
-        result = e.note_test("Kann leer gelassen werden", "Kann leer gelassen werden");
-        assertEquals("Transaktion", result);
     }
     @Test
     void test_NoteTest_keineNotiz() {
