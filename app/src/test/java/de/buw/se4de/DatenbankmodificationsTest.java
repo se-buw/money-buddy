@@ -1,5 +1,6 @@
 package de.buw.se4de;
 
+import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -231,12 +232,40 @@ class DatenbankmodificationsTest {
         }
         catch(Exception e){ fail(); }
 
+    }
 
 
+    @Test
+    public void datesWithDetailsTest(){
+        try{restoreTestDatabase();
+        }
+        catch (Exception e){
+            fail();
+        }
+
+        try{
+            Pair<Integer, String[]> pairRS = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/test/resources/FUFA");
+
+            assertEquals(10, pairRS.getKey());
+            assertEquals("2020-01-02: Eingabe 100.0 Gehalt Gehalt Dezember", pairRS.getValue()[9]);
+            assertEquals("2020-01-10: Ausgabe 10.5 Lebensmittel Einkauf", pairRS.getValue()[8]);
+            assertEquals("2020-06-15: Eingabe 235.0 Gehalt Gehalt Juni", pairRS.getValue()[7]);
+            assertEquals("2020-10-30: Eingabe 50.0 Geschenke Geburtstag", pairRS.getValue()[5]);
+            assertEquals("2020-10-30: Eingabe 66.0 Geschenke Ostern", pairRS.getValue()[6]);
+            assertEquals("2020-11-01: Ausgabe 100.0 Miete Miete November", pairRS.getValue()[4]);
+            assertEquals("2020-11-22: Ausgabe 100.0 Freizeit Shoppen", pairRS.getValue()[3]);
+            assertEquals("2020-11-23: Ausgabe 18.0 Freizeit Essen gehen", pairRS.getValue()[2]);
+            assertEquals("2021-01-22: Ausgabe 100.0 Miete Miete Januar", pairRS.getValue()[1]);
+            assertEquals("2021-03-03: Ausgabe 66.0 Lebensmittel Wocheneinkauf", pairRS.getValue()[0]);
+
+
+        }
+        catch(Exception e){
+            fail();
+        }
 
 
     }
-
 
 
 
