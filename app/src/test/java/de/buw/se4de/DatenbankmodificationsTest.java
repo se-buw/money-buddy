@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
@@ -16,6 +17,16 @@ class DatenbankmodificationsTest {
     @Test
     void testTest(){
         assertEquals(1, 1);
+    }
+
+    public void restoreTestDatabase() throws Exception{
+        try{
+            Connection conn = DriverManager.getConnection("jdbc:h2:./src/test/resources/FUFA", "", "");
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM Konto WHERE ID > 148");
+        }catch(Exception e){
+            fail("Database restoring failed");
+        }
     }
 
     public void addGreetingTest(String url, String e_a, double value, String category, String note, String date) throws Exception{
@@ -38,9 +49,11 @@ class DatenbankmodificationsTest {
             assertEquals(note, actual_note);
             assertEquals(category, actual_category);
             assertEquals(date, actual_date);
+
+
         }
         catch (Exception e){
-           fail();
+            fail();
         }
 
 
@@ -50,7 +63,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_Eingabe() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "hey";
         String date = "2020-02-02";
 
@@ -64,7 +77,8 @@ class DatenbankmodificationsTest {
         catch (Exception e) { fail(); }
 
         try{ addGreetingTest("jdbc:h2:./src/test/resources/FUFA", e_a, value, category, note, date); }
-        catch (Exception e){ fail(); }
+        catch (Exception e){ fail();
+        }
 
     }
 
@@ -72,7 +86,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_Ausgabe() {
         String e_a = "Ausgabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Miete";
         String note = "hey";
         String date = "2020-02-02";
 
@@ -88,13 +102,14 @@ class DatenbankmodificationsTest {
         try{ addGreetingTest("jdbc:h2:./src/test/resources/FUFA", e_a, value, category, note, date); }
         catch (Exception e){ fail(); }
 
+
     }
 
     @Test
     void addGreetingTest_firstday() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "hey";
         String date = "2020-02-01";
 
@@ -116,7 +131,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_firstmonth() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "hey";
         String date = "2020-01-02";
 
@@ -137,7 +152,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_year1000() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "hey";
         String date = "1000-02-02";
 
@@ -158,7 +173,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_year3000() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "hey";
         String date = "3000-02-02";
 
@@ -179,7 +194,7 @@ class DatenbankmodificationsTest {
     void addGreetingTest_emptyNote() {
         String e_a = "Eingabe";
         double value = 100.0;
-        String category = "Geschenk";
+        String category = "Geschenke";
         String note = "";
         String date = "2020-02-02";
 
@@ -194,6 +209,31 @@ class DatenbankmodificationsTest {
 
         try{ addGreetingTest("jdbc:h2:./src/test/resources/FUFA", e_a, value, category, note, date); }
         catch (Exception e){ fail(); }
+
+    }
+
+    @Test
+    public void sumTest(){
+        try{restoreTestDatabase();
+        }
+        catch (Exception e){
+            fail();
+        }
+
+        try{ ArrayList<Double> list = new Datenbankmodifications().sum("jdbc:h2:./src/test/resources/FUFA");
+            assertEquals(56.5, list.get(0));
+            assertEquals(200.0, list.get(1));
+            assertEquals(76.5, list.get(2));
+            assertEquals(118.0, list.get(3));
+            assertEquals(335.0, list.get(4));
+            assertEquals(116.0, list.get(5));
+
+        }
+        catch(Exception e){ fail(); }
+
+
+
+
 
     }
 
