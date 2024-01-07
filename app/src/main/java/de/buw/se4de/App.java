@@ -33,9 +33,16 @@ import javafx.scene.text.FontPosture;
 
 
 public class App extends Application {
-		
 
-	  @Override
+		public static double sum (ArrayList<Double> difference, int bound_left, int bound_right) {
+			double sum = 0;
+			for (int i = bound_left; i < bound_right; ++i) {
+				sum += difference.get(i);
+			}
+			return sum;
+		}//bekommt ein Array und bekommt zwei Grenzen und summiert die Werte im Array zwischen diesen Grenzen
+
+		@Override
 	    public void start(Stage stage) {
 		  	//Setup
 		  
@@ -85,19 +92,8 @@ public class App extends Application {
 	        Label geschenkeSpace = new Label("");
 	        
 	        // berechnet den Prozentualen Geldwert jeder Kategorie
-	        double sumAusgaben = 0;
-	        
-	        for (int i = 1; i < 4; ++i)
-	        {
-	        	sumAusgaben += difference.get(i);
-	        }
-	        
-	        double sumEinnahmen = 0;
-	        
-	        for (int i = 4; i < 6; ++i)
-	        {
-	        	sumEinnahmen += difference.get(i);
-	        }
+	        double sumAusgaben = sum(difference, 1, 4);
+			double sumEinnahmen = sum(difference, 4, 6);
 	        
 	        double mieteProzent = difference.get(1) / sumAusgaben * 100; 
 	        double lebensmittelProzent = difference.get(2) / sumAusgaben * 100; 
@@ -152,19 +148,8 @@ public class App extends Application {
 					neu = difference1.get(0) + "";
 					space.setText("   "+neu+ " Euro");
 					
-					double sumAusgaben1 = 0;
-			        
-			        for (int i = 1; i < 4; ++i)
-			        {
-			        	sumAusgaben1 += difference1.get(i);
-			        }
-			        
-			        double sumEinnahmen1 = 0;
-			        
-			        for (int i = 4; i < 6; ++i)
-			        {
-			        	sumEinnahmen1 += difference1.get(i);
-			        }
+					double sumAusgaben1 = sum(difference1, 1, 4);
+			        double sumEinnahmen1 = sum(difference1, 4, 6);
 			        
 			        double mieteProzent1 = difference1.get(1) / sumAusgaben1 * 100; 
 			        double lebensmittelProzent1 = difference1.get(2) / sumAusgaben1 * 100; 

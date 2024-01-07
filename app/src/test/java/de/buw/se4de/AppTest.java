@@ -4,24 +4,41 @@
 package de.buw.se4de;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-	/*
 	@Test
+	void test_sum_rightSum() {
+		ArrayList<Double> test_list = new ArrayList<Double>();
+		test_list.add(23.4);
+		test_list.add(24.4);
+		test_list.add(25.4);
+		test_list.add(26.4);
+		test_list.add(27.4);
+		test_list.add(28.4);
+		test_list.add(29.4);
 
-	void appHasAGreeting() {
-		Datenbankmodifications classUnderTest = new Datenbankmodifications();
-		try {
-			assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-		} catch (Exception e) {
-			fail();
-		}
-	}*/
-
+		App app = new App();
+		double test_sum = app.sum(test_list,2,7);
+		assertEquals(137.0, test_sum);
+	}
 	@Test
-	void testTest(){
-		assertEquals(1, 1);
+	void test_sum_falseSum() {
+		ArrayList<Double> test_list = new ArrayList<Double>();
+		test_list.add(23.4);
+		test_list.add(24.4);
+		test_list.add(25.4);
+		test_list.add(26.4);
+		test_list.add(27.4);
+		test_list.add(28.4);
+		test_list.add(29.4);
+
+		App app = new App();
+		double test_sum = app.sum(test_list,2,5);
+		assertNotEquals(75.3, test_sum);
 	}
 
 
