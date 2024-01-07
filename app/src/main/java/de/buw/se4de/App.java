@@ -39,7 +39,7 @@ public class App extends Application {
 		  
 		  	ArrayList<Double> difference = new ArrayList<Double>(10);
 		  	try {
-		  		difference = new Datenbankmodifications().sum();
+		  		difference = new Datenbankmodifications().sum("jdbc:h2:./src/main/resources/FUFA");
 			} catch (Exception e) {
 				System.out.println("Hier stimmt was nicht");
 			}
@@ -119,7 +119,7 @@ public class App extends Application {
 	        
 	        
 	        try {
-				 pair = new Datenbankmodifications().datesWithDetails();
+				 pair = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -146,7 +146,7 @@ public class App extends Application {
 	        	try {
 	        		String neu = "";
 	        		ArrayList<Double> difference1 = new ArrayList<Double>(10);
-					difference1 = new Datenbankmodifications().sum();
+					difference1 = new Datenbankmodifications().sum("jdbc:h2:./src/main/resources/FUFA");
 					neu = difference1.get(0) + "";
 					space.setText("   "+neu+ " Euro");
 					
@@ -179,7 +179,7 @@ public class App extends Application {
 					
 					
 					Pair<Integer, String[]> pair2;
-					pair2 = new Datenbankmodifications().datesWithDetails();
+					pair2 = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA");
 					items.removeAll(items);
 					for (int i = 0; i < pair2.getKey(); i++  )
 				       {
@@ -197,6 +197,6 @@ public class App extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch();
-		new Datenbankmodifications().getGreeting();
+		new Datenbankmodifications().getGreeting("jdbc:h2:./src/main/resources/FUFA");
 	}
 }
