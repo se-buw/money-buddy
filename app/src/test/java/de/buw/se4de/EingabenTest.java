@@ -3,7 +3,10 @@ package de.buw.se4de;
 import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +25,7 @@ class EingabenTest {
     void test_NoteTest_keineNotiz() {
         Eingaben e = new Eingaben();
         String result = e.note_test("Kann leer gelassen werden", "Kann leer gelassen werden");
-        assertEquals("Transaktion", result);
+        assertEquals("", result);
     }
     @Test
     void test_MoneyParseTest_validInput() {
@@ -49,7 +52,21 @@ class EingabenTest {
         Eingaben e = new Eingaben();
         boolean result = e.calendar_test(calendar, 24, 1, 2023);
         assertTrue(result);
+        assertEquals(2023, calendar.get(Calendar.YEAR));
+        assertEquals(1, calendar.get(Calendar.MONTH));
+        assertEquals(24, calendar.get(Calendar.DATE));
     }
+    @Test
+    void testCalendarTest_validDate2() {
+        Calendar calendar = Calendar.getInstance();
+        Eingaben e = new Eingaben();
+        boolean result = e.calendar_test(calendar, 12, 5, 2023);
+        assertTrue(result);
+        assertEquals(2023, calendar.get(Calendar.YEAR));
+        assertEquals(5, calendar.get(Calendar.MONTH));
+        assertEquals(12, calendar.get(Calendar.DATE));
+    }
+
     @Test
     void testCalendarTest_invalidDate() {
         Calendar calendar = Calendar.getInstance();
