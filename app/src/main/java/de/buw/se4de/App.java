@@ -183,27 +183,7 @@ public class App extends Application {
 	    }
 
 	public static void main(String[] args) throws Exception {
-
-	  /* //new Datenbankmodifications().getGreeting();
-		Connection conn = DriverManager.getConnection("jdbc:h2:./src/test/resources/FUFA", "", "");
-
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("DELETE FROM Konto WHERE ID > 148");
-		//"DELETE FROM Konto WHERE ID = (SELECT MAX(ID) FROM Konto)"
-
-	 	Calendar calendar = Calendar.getInstance();
-		int day = Integer.parseInt("30");
-		int month = Integer.parseInt("10") - 1;
-		int year = Integer.parseInt("2020");
-		calendar.set(year, month, day);
-		new Datenbankmodifications().addGreeting("jdbc:h2:./src/test/resources/FUFA", "Eingabe", 50.0, "Geburtstag", "Geschenke", calendar);
-		Calendar calendar2 = Calendar.getInstance();
-		int day2 = Integer.parseInt("20");
-		int month2 = Integer.parseInt("04") - 1;
-		int year2 = Integer.parseInt("2021");
-		calendar2.set(year2, month2, day2);
-		new Datenbankmodifications().addGreeting("jdbc:h2:./src/test/resources/FUFA", "Eingabe", 66.0, "Ostern", "Geschenke", calendar);
-	*/	launch();
+		launch();
 		new Datenbankmodifications().getGreeting("jdbc:h2:./src/test/resources/FUFA");
 	}
 }

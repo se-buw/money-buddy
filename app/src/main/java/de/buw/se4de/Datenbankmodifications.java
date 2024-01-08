@@ -29,8 +29,7 @@ public class Datenbankmodifications {
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
-		//ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
-		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto WHERE ID = (SELECT MAX(ID) FROM Konto)");
+		ResultSet selectRS = stmt.executeQuery("SELECT * FROM Konto");
 		// Ausgabe
 		while (selectRS.next()) {
 			int columns = selectRS.getMetaData().getColumnCount();
@@ -40,20 +39,6 @@ public class Datenbankmodifications {
 			System.out.println(); // Move to the next line for the next row
 		}
 
-
-
-		//Test für Tests
-		Statement stmt2 = conn.createStatement();
-		ResultSet selectRS2 = stmt2.executeQuery("SELECT * FROM Konto WHERE ID = (SELECT MAX(ID) FROM Konto)");
-
-		selectRS2.next();
-		String art = selectRS2.getString(2);
-		double betrag = selectRS2.getDouble(3);
-		String notiz =  selectRS2.getString(4);
-		String kategorie = selectRS2.getString(5);
-		String datum = selectRS2.getString(6);
-
-		System.out.println("*" + datum + "*");
 
 		return result; //hat keine Funktion
 	}

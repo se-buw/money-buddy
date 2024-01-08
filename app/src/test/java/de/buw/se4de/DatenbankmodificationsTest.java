@@ -15,10 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DatenbankmodificationsTest {
 
-    @Test
-    void testTest(){
-        assertEquals(1, 1);
-    }
 
     public void restoreTestDatabase() throws Exception{
         try{
