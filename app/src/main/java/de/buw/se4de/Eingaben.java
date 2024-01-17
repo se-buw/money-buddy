@@ -154,16 +154,22 @@ public class Eingaben {
 				ErrorText.setText("Bitte w\u00e4hlen Sie eine Kategorie aus");
 				return;
 			}
-			
 			String category = userInputField.getText();
-			//double money = 0; Einträge waren immer 0 weshalb alle Transaktionen den Geldwert 0 hatten
-			String geld_betrag_s = betrag.getText();
-			double geld_betrag_d = Double.parseDouble(geld_betrag_s);
-			test = (Boolean)money_parse_test(geld_betrag_s, geld_betrag_d).getKey();
+			double geld_betrag_d = 0.0;
+			try {
+				geld_betrag_d = Double.parseDouble(betrag.getText());
+			}catch(Exception n){
+				ErrorText.setText("Bitte korrekten Betrag eingeben");
+				return;
+			}
+			/*
+			test = (Boolean)money_parse_test(betrag.getText(), geld_betrag_d).getKey();
 			if (!test){
 				ErrorText.setText("Bitte geben Sie einen gültigen Betrag an");
 				return;
 			}
+			*/
+
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
 				//Damit wir für die Datenbank ein Datums Format haben

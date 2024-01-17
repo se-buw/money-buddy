@@ -22,7 +22,7 @@ class AppTest {
 		test_list.add(29.4);
 
 		App app = new App();
-		double test_sum = app.sum(test_list,2,7);
+		double test_sum = app.arraySum(test_list,2,7);
 		assertEquals(137.0, test_sum);
 	}
 	@Test
@@ -37,7 +37,7 @@ class AppTest {
 		test_list.add(29.4);
 
 		App app = new App();
-		double test_sum = app.sum(test_list,2,5);
+		double test_sum = app.arraySum(test_list,2,5);
 		assertNotEquals(75.3, test_sum);
 	}
 
