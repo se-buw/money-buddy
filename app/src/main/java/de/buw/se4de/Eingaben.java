@@ -156,11 +156,12 @@ public class Eingaben {
 			}
 			
 			String category = userInputField.getText();
-			double money = 0;
-			String geld_betrag = betrag.getText();
-			test = (Boolean)money_parse_test(geld_betrag, money).getKey();
+			//double money = 0; Einträge waren immer 0 weshalb alle Transaktionen den Geldwert 0 hatten
+			String geld_betrag_s = betrag.getText();
+			double geld_betrag_d = Double.parseDouble(geld_betrag_s);
+			test = (Boolean)money_parse_test(geld_betrag_s, geld_betrag_d).getKey();
 			if (!test){
-				ErrorText.setText("Bitte geben Sie einen gültigen Batrag an");
+				ErrorText.setText("Bitte geben Sie einen gültigen Betrag an");
 				return;
 			}
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
@@ -180,7 +181,7 @@ public class Eingaben {
 					return;
 				}
 		        
-				new Datenbankmodifications().addGreeting("jdbc:h2:./src/main/resources/FUFA", order[0],money, note, category, calendar);
+				new Datenbankmodifications().addGreeting("jdbc:h2:./src/main/resources/FUFA", order[0],geld_betrag_d, note, category, calendar);
 			} catch (Exception e1) {
 				ErrorText.setText("Bitte korrektes Datum eigeben");
 				return;

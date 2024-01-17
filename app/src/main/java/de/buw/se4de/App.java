@@ -34,7 +34,7 @@ import javafx.scene.text.FontPosture;
 
 public class App extends Application {
 
-		public static double sum (ArrayList<Double> difference, int bound_left, int bound_right) {
+		public static double arraySum (ArrayList<Double> difference, int bound_left, int bound_right) {
 			double sum = 0;
 			for (int i = bound_left; i < bound_right; ++i) {
 				sum += difference.get(i);
@@ -92,8 +92,8 @@ public class App extends Application {
 	        Label geschenkeSpace = new Label("");
 	        
 	        // berechnet den Prozentualen Geldwert jeder Kategorie
-	        double sumAusgaben = sum(difference, 1, 4);
-			double sumEinnahmen = sum(difference, 4, 6);
+	        double sumAusgaben = arraySum(difference, 1, 4);
+			double sumEinnahmen = arraySum(difference, 4, 6);
 	        
 	        double mieteProzent = difference.get(1) / sumAusgaben * 100; 
 	        double lebensmittelProzent = difference.get(2) / sumAusgaben * 100; 
@@ -148,8 +148,8 @@ public class App extends Application {
 					neu = difference1.get(0) + "";
 					space.setText("   "+neu+ " Euro");
 					
-					double sumAusgaben1 = sum(difference1, 1, 4);
-			        double sumEinnahmen1 = sum(difference1, 4, 6);
+					double sumAusgaben1 = arraySum(difference1, 1, 4);
+			        double sumEinnahmen1 = arraySum(difference1, 4, 6);
 			        
 			        double mieteProzent1 = difference1.get(1) / sumAusgaben1 * 100; 
 			        double lebensmittelProzent1 = difference1.get(2) / sumAusgaben1 * 100; 
