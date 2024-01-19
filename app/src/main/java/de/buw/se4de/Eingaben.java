@@ -33,7 +33,7 @@ public class Eingaben {
 	 */
 	public static String note_test(String note, String notizTextString) {
 		if (note.equals(notizTextString)) {
-			note = "Transaktion";
+			note = "";
 		}
 		return note;
 	}//prüft ob die Notiz im Notizfeld geändert wurde oder nicht, falls nein wird die Notiz als Transaktion gesetzt
