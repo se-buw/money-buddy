@@ -50,7 +50,7 @@ class EingabenTest {
         boolean result = e.calendar_test(calendar, 24, 1, 2023);
         assertTrue(result);
         assertEquals(2023, calendar.get(Calendar.YEAR));
-        assertEquals(1, calendar.get(Calendar.MONTH));
+        assertEquals(0, calendar.get(Calendar.MONTH));      //the calendar class indexes months from 0 to 11
         assertEquals(24, calendar.get(Calendar.DATE));
     }
     @Test
@@ -60,7 +60,7 @@ class EingabenTest {
         boolean result = e.calendar_test(calendar, 12, 5, 2023);
         assertTrue(result);
         assertEquals(2023, calendar.get(Calendar.YEAR));
-        assertEquals(5, calendar.get(Calendar.MONTH));
+        assertEquals(4, calendar.get(Calendar.MONTH));
         assertEquals(12, calendar.get(Calendar.DATE));
     }
 

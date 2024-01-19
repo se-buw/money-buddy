@@ -52,7 +52,10 @@ public class Eingaben {
 
 	public static Boolean calendar_test(Calendar calendar, int day, int month, int year) {
 		month = month - 1;
-		if (day <= calendar.getActualMaximum(calendar.DAY_OF_MONTH) && month < 13 && month > 0 && year > 0 && day > 0) {
+
+		Calendar tempCal = Calendar.getInstance();
+		tempCal.set(year, month, 1);
+		if(month < 12 && month >= 0 && year > 0 && day > 0 && day <= tempCal.getActualMaximum(tempCal.DAY_OF_MONTH)){
 			calendar.set(year, month, day);
 			return true;
 		} else {
