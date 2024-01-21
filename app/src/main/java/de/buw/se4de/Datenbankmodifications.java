@@ -25,7 +25,6 @@ public class Datenbankmodifications {
 
 		// Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie
 		// und eine Notiz
-		// ToDo Datum:
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
@@ -54,7 +53,6 @@ public class Datenbankmodifications {
 
 		// Creates Database after the Requirements Ausgabe-Eingabe, Betrag, Kategorie
 		// und eine Notiz
-		// ToDo Datum:
 		String createQ = "CREATE TABLE IF NOT EXISTS Konto"
 				+ "(ID INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, EINGABEAUSGABE VARCHAR, WERT DOUBLE, KATEGORIE VARCHAR(255), NOTIZ VARCHAR(255), DATUM DATE)";
 		stmt.executeUpdate(createQ);
@@ -176,7 +174,6 @@ public class Datenbankmodifications {
 	            // = dateResultSet.getRow();
 	        }
 	        catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

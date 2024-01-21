@@ -169,25 +169,11 @@ public class Eingaben {
 				ErrorText.setText("Bitte korrekten Betrag eingeben");
 				return;
 			}
-			/*
-			test = (Boolean)money_parse_test(betrag.getText(), geld_betrag_d).getKey();
-			if (!test){
-				ErrorText.setText("Bitte geben Sie einen gültigen Betrag an");
-				return;
-			}
-			*/
 
 			//wenn die Werte nicht stimmen, funktioniert das einfügen nicht
 			try {
 				//Damit wir für die Datenbank ein Datums Format haben
-				//SimpleDateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
-		        //Date date = dateFormat.parse(dateStringDay);
 		        Calendar calendar = Calendar.getInstance();
-				/*
-		        int day = Integer.parseInt(dateStringDay);
-		        int month = Integer.parseInt(dateStringMonth)-1;
-		        int year = Integer.parseInt(dateStringYear);
-		        calendar.set(year, month,1);*/
 				test = calendar_test(calendar, Integer.parseInt(dateStringDay), Integer.parseInt(dateStringMonth), Integer.parseInt(dateStringYear));
 				if (!test){
 					ErrorText.setText("Bitte geben Sie ein gültiges Datum an");

@@ -127,7 +127,6 @@ public class App extends Application {
 	        try {
 				 pair = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA", showing_Income);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	        ListView<String> listView = new ListView<>();
