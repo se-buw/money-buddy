@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -33,6 +34,7 @@ import javafx.scene.text.FontPosture;
 
 
 public class App extends Application {
+		public boolean showing_Income = true;
 
 		public static double arraySum (ArrayList<Double> difference, int bound_left, int bound_right) {
 			double sum = 0;
@@ -55,6 +57,12 @@ public class App extends Application {
 		  	String diff = difference.get(0) + "";
 		  	Button eingaben = new Button("Transaktion hinzuf\u00fcgen");
 		  	Button aktualisieren = new Button("Aktualisieren");
+
+			ComboBox<String> inOutComboBox = new ComboBox<>();
+			ObservableList<String> categories = FXCollections.observableArrayList("Eingabe", "Ausgabe");
+			inOutComboBox.setValue("Eingabe");
+			inOutComboBox.setItems(categories);
+
 		  	// Umlaute werden sonst nicht richtig dargestellt
 		  	stage.setTitle("F\u00dcFA");
 	        Text text = new Text("F\u00dcFA - Finanz \u00dcbersicht f\u00fcr Anf\u00e4nger");
@@ -117,7 +125,7 @@ public class App extends Application {
 	        
 	        
 	        try {
-				 pair = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA");
+				 pair = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA", showing_Income);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,14 +137,24 @@ public class App extends Application {
 	        rightborder.getChildren().addAll(eingaben,aktualisieren);
 	        border.setRight(rightborder);
 	        leftborder.getChildren().addAll( differenz, space, ausgaben, mieteName, mieteZahl, mieteSpace, lebensmittelName, lebensmittelZahl, lebensmittelSpace, freizeitName,  freizeitZahl, freizeitSpace, einnahmen, gehaltName, gehaltZahl, gehaltSpace, geschenkeName, geschenkeZahl, geschenkeSpace);
-	        centerborder.getChildren().addAll(transaktion,listView);
+	        centerborder.getChildren().addAll(inOutComboBox, transaktion,listView);
 	        text.setFill(Color.BLACK);
 	        text.setFont(Font.font("Comic Sans MS", FontPosture.ITALIC, 20));
 	        border.setTop(new StackPane(text));
 	        border.setBottom(bottomborder);
 	        border.setLeft(leftborder);
 	        border.setCenter(centerborder);
-	        
+
+			inOutComboBox.setOnAction(e ->{
+				String selectedCategory = inOutComboBox.getValue();
+				if (selectedCategory.equals("Eingabe")){
+					showing_Income = true;
+				}
+				else if (selectedCategory.equals("Ausgabe")){
+					showing_Income = false;
+				}
+			});
+
 	        //Eingaben von Ein-und Ausgaben realisieren
 	        
 	        eingaben.setOnAction(e -> Eingaben.display());
@@ -166,7 +184,7 @@ public class App extends Application {
 					
 					
 					Pair<Integer, String[]> pair2;
-					pair2 = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA");
+					pair2 = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/main/resources/FUFA", showing_Income);
 					items.removeAll(items);
 					for (int i = 0; i < pair2.getKey(); i++  )
 				       {

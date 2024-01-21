@@ -165,6 +165,9 @@ class DatenbankmodificationsTest {
         try{ addGreetingTest("jdbc:h2:./src/test/resources/FUFA", e_a, value, category, note, date); }
         catch (Exception e){ fail(); }
 
+        //Dates before the 15.10.1582 don't work properly because the gregorian calendar didn't exist then.
+        //This shouldn't realistically be a problem because it wouldn't make any sense letting the user input such a date,
+        //so we restricted valid dates to be >1950.
     }
     @Test
     void addGreetingTest_year3000() {
@@ -240,19 +243,25 @@ class DatenbankmodificationsTest {
         }
 
         try{
-            Pair<Integer, String[]> pairRS = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/test/resources/FUFA");
+            Pair<Integer, String[]> pairRSIn = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/test/resources/FUFA", true);
+            Pair<Integer, String[]> pairRSOut = new Datenbankmodifications().datesWithDetails("jdbc:h2:./src/test/resources/FUFA", false);
 
-            assertEquals(10, pairRS.getKey());
-            assertEquals("2020-01-02: Eingabe 100.0 Gehalt Gehalt Dezember", pairRS.getValue()[9]);
-            assertEquals("2020-01-10: Ausgabe 10.5 Lebensmittel Einkauf", pairRS.getValue()[8]);
-            assertEquals("2020-06-15: Eingabe 235.0 Gehalt Gehalt Juni", pairRS.getValue()[7]);
-            assertEquals("2020-10-30: Eingabe 50.0 Geschenke Geburtstag", pairRS.getValue()[5]);
-            assertEquals("2020-10-30: Eingabe 66.0 Geschenke Ostern", pairRS.getValue()[6]);
-            assertEquals("2020-11-01: Ausgabe 100.0 Miete Miete November", pairRS.getValue()[4]);
-            assertEquals("2020-11-22: Ausgabe 100.0 Freizeit Shoppen", pairRS.getValue()[3]);
-            assertEquals("2020-11-23: Ausgabe 18.0 Freizeit Essen gehen", pairRS.getValue()[2]);
-            assertEquals("2021-01-22: Ausgabe 100.0 Miete Miete Januar", pairRS.getValue()[1]);
-            assertEquals("2021-03-03: Ausgabe 66.0 Lebensmittel Wocheneinkauf", pairRS.getValue()[0]);
+            assertEquals(4, pairRSIn.getKey());
+            assertEquals(6, pairRSOut.getKey());
+
+            assertEquals("2020-01-02: Eingabe 100.0 Gehalt Gehalt Dezember", pairRSIn.getValue()[3]);
+            assertEquals("2020-06-15: Eingabe 235.0 Gehalt Gehalt Juni", pairRSIn.getValue()[2]);
+            assertEquals("2020-10-30: Eingabe 66.0 Geschenke Ostern", pairRSIn.getValue()[1]);
+            assertEquals("2020-10-30: Eingabe 50.0 Geschenke Geburtstag", pairRSIn.getValue()[0]);
+
+            assertEquals("2020-01-10: Ausgabe 10.5 Lebensmittel Einkauf", pairRSOut.getValue()[5]);
+            assertEquals("2020-11-01: Ausgabe 100.0 Miete Miete November", pairRSOut.getValue()[4]);
+            assertEquals("2020-11-22: Ausgabe 100.0 Freizeit Shoppen", pairRSOut.getValue()[3]);
+            assertEquals("2020-11-23: Ausgabe 18.0 Freizeit Essen gehen", pairRSOut.getValue()[2]);
+            assertEquals("2021-01-22: Ausgabe 100.0 Miete Miete Januar", pairRSOut.getValue()[1]);
+            assertEquals("2021-03-03: Ausgabe 66.0 Lebensmittel Wocheneinkauf", pairRSOut.getValue()[0]);
+
+
 
 
         }

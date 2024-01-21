@@ -55,7 +55,7 @@ public class Eingaben {
 
 		Calendar tempCal = Calendar.getInstance();
 		tempCal.set(year, month, 1);
-		if(month < 12 && month >= 0 && year > 0 && day > 0 && day <= tempCal.getActualMaximum(tempCal.DAY_OF_MONTH)){
+		if(month < 12 && month >= 0 && year > 1950 && day > 0 && day <= tempCal.getActualMaximum(tempCal.DAY_OF_MONTH)){
 			calendar.set(year, month, day);
 			return true;
 		} else {

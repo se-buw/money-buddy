@@ -146,7 +146,7 @@ public class Datenbankmodifications {
 	 * @throws Exception
 	 */
 
-	public Pair<Integer, String[]> datesWithDetails(String url) throws Exception {
+	public Pair<Integer, String[]> datesWithDetails(String url, Boolean showing_Income) throws Exception {
 	    String[] dates1 = new String[1000];
 	    int resultSetSize = 0;
 	    
@@ -155,7 +155,14 @@ public class Datenbankmodifications {
 	    	
 	    	
 	        // Anfrage an die Datenbank für die niedrigsten Daten
-	        String dateQuery = "SELECT DATUM FROM Konto ORDER BY DATUM DESC";
+			String dateQuery;
+
+			if (showing_Income){
+				dateQuery = "SELECT DATUM FROM Konto WHERE EINGABEAUSGABE = 'Eingabe' ORDER BY DATUM DESC";
+			}
+			else {
+				dateQuery = "SELECT DATUM FROM Konto WHERE EINGABEAUSGABE = 'Ausgabe' ORDER BY DATUM DESC";
+			}
 	        try (PreparedStatement dateStatement = conn.prepareStatement(dateQuery);
 	             ResultSet dateResultSet = dateStatement.executeQuery()) {
 	            int i = 0;
