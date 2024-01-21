@@ -39,6 +39,7 @@ public class Eingaben {
 	}//prüft ob die Notiz im Notizfeld geändert wurde oder nicht, falls nein wird die Notiz als Transaktion gesetzt
 
 	public static Pair<Boolean, Double> money_parse_test(String geld_betrag, Double money) {
+
 		try {
 			money = Double.parseDouble(geld_betrag);
 			Pair<Boolean, Double> returnPair = new Pair(true, money);
@@ -161,6 +162,9 @@ public class Eingaben {
 			double geld_betrag_d = 0.0;
 			try {
 				geld_betrag_d = Double.parseDouble(betrag.getText());
+				if(geld_betrag_d<0){
+					throw new Exception();
+				}
 			}catch(Exception n){
 				ErrorText.setText("Bitte korrekten Betrag eingeben");
 				return;
